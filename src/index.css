@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body {
+    @apply overflow-x-hidden w-full m-0 p-0 bg-white text-slate-900;
+    background-color: #ffffff;
+    color: #0f172a;
+  }
+  img, video, svg, canvas {
+    @apply max-w-full h-auto;
+  }
+}
+
+/* Fluid responsive text and container adjustments for small mobile screens */
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}

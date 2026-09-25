@@ -1,0 +1,6 @@
+{
+  "name": "SVS Srivasudha - True Wealth India",
+  "description": "SVS Property & Asset Management, NRI Desk, Membership Privilege Cards, Clubs & Resorts, and Foundation Platform",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
