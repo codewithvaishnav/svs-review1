@@ -4,6 +4,8 @@ import {
   MapPin, CheckCircle2, ChevronRight, ChevronLeft, Hotel, UserCheck,
   Search, PhoneCall, Compass, Home, Trees, Shield
 } from 'lucide-react';
+import { LandGridScene } from './three/LandGridScene';
+import { MagneticButton } from './ui3d/MagneticButton';
 
 interface HeroSectionProps {
   onNavigate: (sectionId: string) => void;
@@ -79,34 +81,38 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const slide = slides[currentSlide];
 
   return (
-    <section id="hero" className="relative w-full overflow-hidden bg-slate-950 text-white">
+    <section id="hero" className="relative w-full overflow-hidden text-white">
       
       {/* Background Image Carousel with Smooth Transitions */}
-      <div className="relative min-h-[560px] sm:min-h-[620px] lg:min-h-[680px] flex items-center">
+      <div className="relative min-h-[600px] sm:min-h-[660px] lg:min-h-[740px] flex items-center">
         {slides.map((s, index) => (
           <div
             key={s.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'
+            className={`absolute inset-0 transition-all duration-[1200ms] ease-in-out ${
+              index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-110 pointer-events-none'
             }`}
           >
             <img
               src={s.image}
               alt={s.title}
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-center opacity-25 saturate-[0.6]"
             />
-            {/* Rich Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-slate-950/40" />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/40" />
           </div>
         ))}
+
+        {/* WebGL land-parcel scene layered over the imagery */}
+        <LandGridScene className="absolute inset-0 z-10" />
+
+        <div className="absolute inset-0 z-[11] bg-gradient-to-r from-obsidian-950 via-obsidian-950/70 to-transparent" />
+        <div className="absolute inset-0 z-[11] bg-gradient-to-t from-obsidian-950 via-transparent to-obsidian-950/60" />
+        <div className="absolute inset-x-0 top-0 z-[11] h-64 grid-floor" />
 
         {/* Content Container */}
         <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 w-full">
           <div className="max-w-3xl space-y-6">
             
             {/* Top Category Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-xs sm:text-sm font-bold tracking-wide backdrop-blur-sm animate-in fade-in duration-500">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass glass-gold text-aurum-400 text-xs sm:text-sm font-bold tracking-wide float-slow">
               <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0" />
               <span>{slide.tagline}</span>
               <span className="text-amber-400/60">•</span>
@@ -114,7 +120,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.15] drop-shadow-sm font-serif">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] font-serif gold-text drop-shadow-[0_8px_30px_rgba(0,0,0,0.8)]">
               {slide.title}
             </h1>
 
@@ -125,17 +131,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
             {/* CTA Buttons */}
             <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
-              <button
+              <MagneticButton
                 onClick={() => onNavigate(slide.ctaTarget)}
-                className="px-6 sm:px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs sm:text-sm tracking-wide shadow-lg shadow-amber-500/25 flex items-center gap-2.5 transition-all hover:scale-[1.02] cursor-pointer"
+                className="px-6 sm:px-8 py-3.5 rounded-xl bg-gradient-to-r from-aurum-400 to-aurum-600 text-obsidian-950 font-black text-xs sm:text-sm tracking-wide flex items-center gap-2.5 cursor-pointer"
               >
                 <span>{slide.ctaText}</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </MagneticButton>
 
               <button
                 onClick={onOpenEnrollment}
-                className="px-5 sm:px-7 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm border border-white/25 backdrop-blur-md flex items-center gap-2 transition-all cursor-pointer hover:border-white/50"
+                className="px-5 sm:px-7 py-3.5 rounded-xl glass glass-hover text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition-all cursor-pointer"
               >
                 <UserCheck className="w-4 h-4 text-amber-300" />
                 <span>Join as Channel Partner</span>
@@ -143,7 +149,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
               <button
                 onClick={onDownloadBrochure}
-                className="px-4 py-3.5 rounded-xl bg-slate-900/60 hover:bg-slate-900 text-slate-300 hover:text-white font-semibold text-xs border border-slate-700/60 flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="px-4 py-3.5 rounded-xl glass text-slate-300 hover:text-white font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5 text-amber-400" />
                 <span>Brochure</span>
@@ -151,9 +157,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
 
             {/* Key Trust Badges */}
-            <div className="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs border-t border-white/15">
+            <div className="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs border-t border-white/10">
               <div>
-                <div className="text-xl sm:text-2xl font-black text-amber-400">20+ Years</div>
+                <div className="text-xl sm:text-2xl font-black gold-text">20+ Years</div>
                 <div className="text-slate-300 text-[11px] font-medium">Trust & Track Record</div>
               </div>
               <div>
@@ -161,7 +167,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <div className="text-slate-300 text-[11px] font-medium">Happy Land Owners</div>
               </div>
               <div>
-                <div className="text-xl sm:text-2xl font-black text-emerald-400">100% Clear</div>
+                <div className="text-xl sm:text-2xl font-black text-jade-400">100% Clear</div>
                 <div className="text-slate-300 text-[11px] font-medium">Legal Documentation</div>
               </div>
               <div>
@@ -178,20 +184,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <button
             onClick={prevSlide}
             aria-label="Previous slide"
-            className="p-3 rounded-xl bg-slate-900/80 hover:bg-amber-400 hover:text-slate-950 text-white border border-white/20 backdrop-blur-md transition-all cursor-pointer"
+            className="p-3 rounded-xl glass hover:bg-aurum-400 hover:text-obsidian-950 text-white transition-all cursor-pointer"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           
           {/* Slide Dots Indicator */}
-          <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900/80 border border-white/20 backdrop-blur-md">
+          <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl glass">
             {slides.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentSlide(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
                 className={`h-2 rounded-full transition-all cursor-pointer ${
-                  idx === currentSlide ? 'w-6 bg-amber-400' : 'w-2 bg-white/40 hover:bg-white/70'
+                  idx === currentSlide ? 'w-6 bg-aurum-400 shadow-[0_0_12px_rgba(245,196,81,0.9)]' : 'w-2 bg-white/40 hover:bg-white/70'
                 }`}
               />
             ))}
@@ -200,7 +206,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <button
             onClick={nextSlide}
             aria-label="Next slide"
-            className="p-3 rounded-xl bg-slate-900/80 hover:bg-amber-400 hover:text-slate-950 text-white border border-white/20 backdrop-blur-md transition-all cursor-pointer"
+            className="p-3 rounded-xl glass hover:bg-aurum-400 hover:text-obsidian-950 text-white transition-all cursor-pointer"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

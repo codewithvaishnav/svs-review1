@@ -1,17 +1,437 @@
 @import "tailwindcss";
 
+/* ============================================================
+   SVS Aurum — dark obsidian + gold 3D theme
+   ============================================================ */
+
+@theme {
+  --color-obsidian-950: #05070d;
+  --color-obsidian-900: #0a0e1a;
+  --color-obsidian-800: #111726;
+  --color-obsidian-700: #1a2235;
+  --color-aurum-400: #f5c451;
+  --color-aurum-500: #e0a92e;
+  --color-aurum-600: #b8821a;
+  --color-jade-400: #4ade9b;
+
+  --font-display: "Playfair Display", "Georgia", serif;
+}
+
+:root {
+  --surface: rgba(17, 23, 38, 0.72);
+  --surface-strong: rgba(10, 14, 26, 0.92);
+  --surface-line: rgba(245, 196, 81, 0.16);
+  --surface-line-soft: rgba(255, 255, 255, 0.08);
+  --text-hi: #f4f6fb;
+  --text-mid: #b7c0d4;
+  --text-low: #8590a8;
+  --glow-gold: 0 0 40px rgba(224, 169, 46, 0.25);
+  --depth-1: 0 2px 6px rgba(0, 0, 0, 0.4);
+  --depth-2: 0 12px 30px -10px rgba(0, 0, 0, 0.7);
+  --depth-3: 0 30px 70px -20px rgba(0, 0, 0, 0.85);
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  color-scheme: dark;
+}
+
 @layer base {
-  html, body {
-    @apply overflow-x-hidden w-full m-0 p-0 bg-white text-slate-900;
-    background-color: #ffffff;
-    color: #0f172a;
+  html,
+  body {
+    @apply overflow-x-hidden w-full m-0 p-0;
+    background-color: #05070d;
+    color: var(--text-hi);
+    -webkit-font-smoothing: antialiased;
   }
-  img, video, svg, canvas {
+
+  body {
+    background-image:
+      radial-gradient(1100px 620px at 12% -10%, rgba(224, 169, 46, 0.12), transparent 60%),
+      radial-gradient(900px 520px at 92% 4%, rgba(59, 130, 246, 0.1), transparent 62%),
+      linear-gradient(180deg, #05070d 0%, #080c16 45%, #05070d 100%);
+    background-attachment: fixed;
+  }
+
+  img,
+  video,
+  svg,
+  canvas {
     @apply max-w-full h-auto;
+  }
+
+  ::selection {
+    background: rgba(224, 169, 46, 0.35);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #05070d;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #b8821a, #5a3f0d);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #f5c451, #b8821a);
   }
 }
 
-/* Fluid responsive text and container adjustments for small mobile screens */
+/* ------------------------------------------------------------
+   Compatibility layer: the site was authored with light-mode
+   utilities across ~12k lines. These remaps translate the legacy
+   palette into the dark theme so every surface stays coherent.
+   ------------------------------------------------------------ */
+@layer utilities {
+  .bg-white,
+  .bg-slate-50,
+  .bg-gray-50,
+  .bg-slate-100,
+  .bg-gray-100 {
+    background-color: var(--surface) !important;
+    backdrop-filter: blur(14px);
+  }
+
+  /* Opacity-modified variants (bg-white/80, bg-slate-50/70, ...) compile to
+     their own classes, so match them by attribute. */
+  [class*="bg-white/"],
+  [class*="bg-slate-50/"],
+  [class*="bg-slate-100/"],
+  [class*="bg-gray-50/"],
+  [class*="bg-gray-100/"] {
+    background-color: var(--surface) !important;
+  }
+
+  /* Light gradient stops would bleach whole panels; map them onto the
+     obsidian surface ramp instead. */
+  .from-white, .from-slate-50, .from-slate-100, .from-gray-50, .from-gray-100 {
+    --tw-gradient-from: rgba(26, 34, 53, 0.9) !important;
+  }
+  .via-white, .via-slate-50, .via-slate-100, .via-gray-50, .via-gray-100 {
+    --tw-gradient-via: rgba(17, 23, 38, 0.9) !important;
+  }
+  .to-white, .to-slate-50, .to-slate-100, .to-gray-50, .to-gray-100 {
+    --tw-gradient-to: rgba(10, 14, 26, 0.9) !important;
+  }
+
+  .bg-slate-900,
+  .bg-slate-950,
+  .bg-gray-900 {
+    background-color: var(--surface-strong) !important;
+  }
+
+  .text-slate-900,
+  .text-gray-900,
+  .text-slate-800,
+  .text-gray-800,
+  .text-black {
+    color: var(--text-hi) !important;
+  }
+
+  .text-slate-700,
+  .text-gray-700,
+  .text-slate-600,
+  .text-gray-600 {
+    color: var(--text-mid) !important;
+  }
+
+  .text-slate-500,
+  .text-gray-500,
+  .text-slate-400 {
+    color: var(--text-low) !important;
+  }
+
+  .border-slate-200,
+  .border-gray-200,
+  .border-slate-300,
+  .border-gray-300,
+  .border-slate-100 {
+    border-color: var(--surface-line-soft) !important;
+  }
+
+  .divide-slate-200 > :not([hidden]) ~ :not([hidden]),
+  .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+    border-color: var(--surface-line-soft) !important;
+  }
+
+  .shadow-sm,
+  .shadow,
+  .shadow-md {
+    box-shadow: var(--depth-1) !important;
+  }
+  .shadow-lg,
+  .shadow-xl {
+    box-shadow: var(--depth-2) !important;
+  }
+  .shadow-2xl {
+    box-shadow: var(--depth-3) !important;
+  }
+
+  /* Pastel accent tints read as washed-out patches on a dark canvas, so the
+     50/100 steps become translucent glows and the 600–800 steps brighten. */
+  .bg-amber-50, .bg-amber-100, .bg-yellow-50, .bg-yellow-100, .bg-orange-50, .bg-orange-100 {
+    background-color: rgba(245, 196, 81, 0.12) !important;
+  }
+  .bg-emerald-50, .bg-emerald-100, .bg-green-50, .bg-green-100, .bg-teal-50, .bg-teal-100 {
+    background-color: rgba(74, 222, 155, 0.1) !important;
+  }
+  .bg-blue-50, .bg-blue-100, .bg-indigo-50, .bg-indigo-100, .bg-sky-50, .bg-sky-100, .bg-cyan-50, .bg-cyan-100 {
+    background-color: rgba(91, 156, 255, 0.12) !important;
+  }
+  .bg-rose-50, .bg-rose-100, .bg-pink-50, .bg-pink-100, .bg-red-50, .bg-red-100 {
+    background-color: rgba(244, 114, 182, 0.12) !important;
+  }
+  .bg-purple-50, .bg-purple-100, .bg-violet-50, .bg-violet-100, .bg-fuchsia-50, .bg-fuchsia-100 {
+    background-color: rgba(167, 139, 250, 0.14) !important;
+  }
+
+  .text-amber-600, .text-amber-700, .text-amber-800, .text-yellow-600, .text-yellow-700,
+  .text-orange-600, .text-orange-700 {
+    color: #f5c451 !important;
+  }
+  .text-emerald-600, .text-emerald-700, .text-emerald-800, .text-green-600, .text-green-700,
+  .text-teal-600, .text-teal-700 {
+    color: #4ade9b !important;
+  }
+  .text-blue-600, .text-blue-700, .text-blue-800, .text-indigo-600, .text-indigo-700,
+  .text-sky-600, .text-sky-700, .text-cyan-600, .text-cyan-700 {
+    color: #7cb4ff !important;
+  }
+  .text-rose-600, .text-rose-700, .text-pink-600, .text-pink-700, .text-red-600, .text-red-700 {
+    color: #fb8ec4 !important;
+  }
+  .text-purple-600, .text-purple-700, .text-violet-600, .text-violet-700 {
+    color: #c4b1fd !important;
+  }
+
+  .border-amber-200, .border-amber-100, .border-yellow-200, .border-orange-200 {
+    border-color: rgba(245, 196, 81, 0.3) !important;
+  }
+  .border-emerald-200, .border-emerald-100, .border-green-200, .border-teal-200 {
+    border-color: rgba(74, 222, 155, 0.3) !important;
+  }
+  .border-blue-200, .border-blue-100, .border-indigo-200, .border-sky-200, .border-cyan-200 {
+    border-color: rgba(91, 156, 255, 0.3) !important;
+  }
+  .border-rose-200, .border-pink-200, .border-red-200 {
+    border-color: rgba(244, 114, 182, 0.3) !important;
+  }
+  .border-purple-200, .border-violet-200 {
+    border-color: rgba(167, 139, 250, 0.3) !important;
+  }
+
+  input,
+  textarea,
+  select {
+    color-scheme: dark;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-low);
+  }
+}
+
+/* ------------------------------------------------------------
+   Theme primitives
+   ------------------------------------------------------------ */
+
+.glass {
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0.02) 45%,
+    rgba(5, 7, 13, 0.4) 100%
+  );
+  border: 1px solid var(--surface-line-soft);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: var(--depth-2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-gold {
+  border-color: var(--surface-line);
+  box-shadow: var(--depth-2), var(--glow-gold), inset 0 1px 0 rgba(245, 196, 81, 0.2);
+}
+
+.glass-hover {
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass-hover:hover {
+  border-color: var(--surface-line);
+  box-shadow: var(--depth-3), var(--glow-gold), inset 0 1px 0 rgba(245, 196, 81, 0.2);
+  transform: translateY(-3px);
+}
+
+/* Every bordered, rounded panel in the app becomes a lifted glass surface. */
+.rounded-xl.border,
+.rounded-2xl.border,
+.rounded-3xl.border {
+  background-image: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.015) 45%,
+    rgba(5, 7, 13, 0.35) 100%
+  );
+  box-shadow: var(--depth-2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease,
+    border-color 260ms ease;
+}
+
+.rounded-xl.border.cursor-pointer:hover,
+.rounded-2xl.border.cursor-pointer:hover,
+.rounded-3xl.border.cursor-pointer:hover,
+.rounded-xl.border.group:hover,
+.rounded-2xl.border.group:hover,
+.rounded-3xl.border.group:hover {
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))
+    translateY(-4px) scale(1.01);
+  border-color: var(--surface-line) !important;
+  box-shadow: var(--depth-3), var(--glow-gold);
+  background-image:
+    radial-gradient(
+      420px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+      rgba(245, 196, 81, 0.16),
+      transparent 60%
+    ),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 45%, rgba(5, 7, 13, 0.35) 100%);
+}
+
+/* Card that reacts to the pointer with real perspective rotation.
+   --tilt-x / --tilt-y are written by the TiltCard component. */
+.tilt-3d {
+  transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateZ(0);
+  transform-style: preserve-3d;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease;
+  will-change: transform;
+}
+
+.tilt-3d > * {
+  transform: translateZ(26px);
+  transform-style: preserve-3d;
+}
+
+/* Pointer-tracked specular highlight sweeping across a surface. */
+.sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    380px circle at var(--pointer-x) var(--pointer-y),
+    rgba(245, 196, 81, 0.18),
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 240ms ease;
+  pointer-events: none;
+}
+
+.sheen:hover::after {
+  opacity: 1;
+}
+
+.gold-text {
+  background: linear-gradient(120deg, #f7dd9a 0%, #e0a92e 42%, #fff3cf 60%, #b8821a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gold-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245, 196, 81, 0.6), transparent);
+}
+
+.btn-3d {
+  position: relative;
+  transform: translateZ(0);
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 180ms ease;
+  box-shadow: 0 10px 22px -10px rgba(224, 169, 46, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.btn-3d:hover {
+  transform: translateY(-2px) scale(1.015);
+  box-shadow: 0 18px 34px -12px rgba(224, 169, 46, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.btn-3d:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: 0 6px 14px -8px rgba(224, 169, 46, 0.6);
+}
+
+/* Root wrapper: transparent so the fixed obsidian backdrop on body shows
+   through, and a stacking context for the cursor glow. */
+.app-shell {
+  position: relative;
+  isolation: isolate;
+  color: var(--text-hi);
+}
+
+.app-shell > *:not(.pointer-events-none) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Depth grid used behind section headers. */
+.grid-floor {
+  background-image:
+    linear-gradient(rgba(245, 196, 81, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 196, 81, 0.07) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+}
+
+/* Scroll reveal, driven by the Reveal component. */
+.reveal {
+  opacity: 0;
+  transform: perspective(1000px) translateY(28px) rotateX(8deg);
+  transition: opacity 700ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: perspective(1000px) translateY(0) rotateX(0deg);
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-slow {
+  animation: float-y 7s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
 @media (max-width: 480px) {
   html {
     font-size: 14px;
@@ -24,17 +444,18 @@
   }
 }
 
-@keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 35s linear infinite;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
+@media (prefers-reduced-motion: reduce) {
+  .float-slow,
+  .animate-marquee {
+    animation: none;
+  }
+  .tilt-3d,
+  .reveal,
+  .btn-3d {
+    transition: none;
+    transform: none;
+  }
+  .reveal {
+    opacity: 1;
+  }
 }

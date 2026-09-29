@@ -32,6 +32,9 @@ import { LoginModal } from './components/LoginModal';
 import { BookingModal } from './components/BookingModal';
 import { PrivacyPolicyModal } from './components/PrivacyPolicyModal';
 import { AiChatbot } from './components/AiChatbot';
+import { CursorGlow } from './components/ui3d/CursorGlow';
+import { usePointerTilt } from './hooks/usePointerTilt';
+import { useScrollReveal } from './hooks/useScrollReveal';
 import { PageAboutBanner } from './components/common/PageAboutBanner';
 import { HowItWorksFaqSection } from './components/common/HowItWorksFaqSection';
 import { pageGuides } from './data/pageGuides';
@@ -57,6 +60,9 @@ export function App() {
 
   const [contactService, setContactService] = useState<string>('DTCP & HMDA Plot Purchase Inquiry');
   const [contactMessage, setContactMessage] = useState<string>('');
+
+  usePointerTilt();
+  useScrollReveal(currentTab);
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -143,7 +149,8 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-emerald-100 selection:text-emerald-950">
+    <div className="min-h-screen app-shell text-slate-900 flex flex-col font-sans selection:bg-amber-400/25 selection:text-amber-50">
+      <CursorGlow />
       
       {/* Toast Notification Banner */}
       {toastMessage && (
