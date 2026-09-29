@@ -46,14 +46,14 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white shadow-xs border-b border-slate-200">
+    <header className="sticky top-0 z-50 w-full glass border-b border-[color:var(--surface-line)] backdrop-blur-xl">
       
       {/* Top Minimal Official Branding Bar */}
       <TopBrandingBar onNavigate={onNavigate} />
 
       {/* Top Utility Bar */}
       {!isLoggedIn && (
-        <div className="bg-slate-100 text-slate-700 text-xs py-1.5 px-4 hidden sm:block border-b border-slate-200">
+        <div className="text-slate-300 text-xs py-1.5 px-4 hidden sm:block border-b border-white/5 bg-obsidian-900/40">
           <div className="max-w-7xl mx-auto flex items-center justify-between font-medium">
             <div className="flex items-center gap-6">
               <span className="flex items-center gap-1.5 text-slate-800">
